@@ -1,4 +1,4 @@
-# 基本语法
+# SQL使用
 
 ## DDL
 
@@ -148,6 +148,7 @@
 >   - `as` 可以省略。
 >   - 字段在一个字句中设置别名后，后续的执行语句中可以使用别名而不是字段名。但注意执行顺序的影响，例如在 `select` 语句中命名的别名不能在 `where` 语句中使用。
 >   - 如果表使用别名，各个关键字后面的字段都可以写成 `别名.字段名` 的形式，因为 `from` 语句最先执行。
+>   - 一般会在 `select` 中给函数的执行结果起别名以便于将结果用于排序。
 
 #### 查询时去除重复记录
 
@@ -182,7 +183,7 @@
 
 #### 常见聚合函数
 
-> ![image](image/常见聚合函数.png)
+> ![image](image/常用聚合函数.png)
 
 ---
 
@@ -281,3 +282,121 @@
 
 ---
 ---
+
+## 函数
+
+### 常用字符串函数
+
+> ![image](image/常用字符串函数.png)
+
+#### 字符串拼接
+
+> - ***select concat('Hello', ' MySQL');***
+
+#### 全部转小写
+
+> - ***select lower('Hello');***
+
+#### 全部转大写
+
+> - ***select upper('Hello');***
+
+#### 左填充和右填充
+
+> - ***select lpad('01', 5, '-');***
+> - ***select rpad('01', 5, '-');***
+
+#### 去除空格
+
+> - ***select trim(' Hello MySQL ');***
+
+#### 截取子串
+
+> - ***select substring('Hello MySQL', 1, 5);***
+> - ***tips:***
+>   - 字符串索引从1开始。
+
+---
+
+### 常用数值函数
+
+> ![image](image/常用数值函数.png)
+
+#### 向上取整
+
+> - ***select ceil(1.1);***
+
+#### 向下取整
+
+> - ***select floor(1.9);***
+
+#### 取模
+
+> - ***select mod(7, 4);***
+
+#### 获取随机数
+
+> - ***select rand();***
+
+#### 四舍五入
+
+> - ***select round(2.344, 2);***
+
+#### 生成6位数随机验证码
+
+> - ***select lpad(round(rand() * 1000000, 0), 6, '0');***
+
+---
+
+### 常用日期函数
+
+> ![image](image/常用日期函数.png)
+
+#### 获取当前日期
+
+> - ***select curdate();***
+
+#### 获取当前时间
+
+> - ***select curtime();***
+
+#### 获取当前日期和时间
+
+> - ***select now();***
+
+#### 获取当前年、月、日
+
+> - ***select year(now());***
+> - ***select month(now());***
+> - ***select day(now());***
+
+#### 增加指定的时间间隔
+
+> - ***select date_add(now(), INTERVAL 70 YEAR);***
+
+#### 获取两个日期相差的天数
+
+> - ***select datediff('2023-10-01', '2023-12-01');***
+
+#### 查询所有员工的入职天数，并根据入职天数倒序排序
+
+> - ***select name, datediff(curdate(), entrydate) as 'entrydays' from emp order by entrydays desc;***
+
+---
+
+### 常用流程函数
+
+> ![image](image/常用流程函数.png)
+
+#### 判断学生各个科目的分数等级
+
+> - ***select id, name, (case when math >= 85 then '优秀' when math >=60 then '及格' else '不及格' end) '数学', (case when english >= 85 then '优秀' when english >= 60 then '及格' else '不及格' end) '英语' , (case when chinese >= 85 then '优秀' when chinese >= 60 then '及格' else '不及格' end) '语文' from score;***
+
+---
+---
+
+## 约束
+
+### 常用约束
+
+> ![image](image/常用约束.png)
