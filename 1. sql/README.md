@@ -412,8 +412,8 @@
 
 #### 添加外键
 
-> - ***create table 表名(字段名 数据类型, ..., [constraint] [外键名称] foreign key (外键字段名) references 主表(主表列名));***
-> - ***alter table 表名 add constraint 外键名 foreign key (外键字段名) references 主表(主表列名);***
+> - ***create table 表名(字段名 数据类型, ..., constraint 外键名 foreign key (外键字段名) references 主表名 (主表列名) );***
+> - ***alter table 表名 add constraint 外键名 foreign key (外键字段名) references 主表 (主表列名);***
 
 #### 删除外键
 
