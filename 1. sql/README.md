@@ -400,3 +400,25 @@
 ### 常用约束
 
 > ![image](image/常用约束.png)
+
+#### 在创建表时为字段添加常用约束
+
+> ![image](image/约束案例字段要求.png)
+> ![image](image/约束案例建表语句.png)
+
+---
+
+### 外键约束
+
+#### 添加外键
+
+> - ***create table 表名(字段名 数据类型, ..., [constraint] [外键名称] foreign key (外键字段名) references 主表(主表列名));***
+> - ***alter table 表名 add constraint 外键名 foreign key (外键字段名) references 主表(主表列名);***
+
+#### 删除外键
+
+> - ***alter table 表名 drop  foreign key 外键名;***
+
+#### 添加外键以后删除或更新父表数据的约束行为
+
+> ![image](image/外键约束行为.png)
