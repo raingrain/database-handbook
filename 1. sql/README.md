@@ -6,90 +6,101 @@
 
 ---
 
-> - **查询所有数据库**
->   - ***show databases;***
+### 查询所有数据库
+
+> - ***show databases;***
 
 ---
 
-> - **查询当前数据库**
->   - ***select database();***
+### 查询当前数据库
+
+> - ***select database();***
 
 ---
 
-> - **创建数据库**
->   - ***create database [if not exists] 数据库名 [default charset 字符集] [collate 排序规则];***
+### 创建数据库
+
+> - ***create database [if not exists] 数据库名 [default charset 字符集] [collate 排序规则];***
 
 ---
 
-> - **删除数据库**
->   - ***drop database [if exists] 数据库名;***
+### 删除数据库
+
+> - ***drop database [if exists] 数据库名;***
 
 ---
 
-> - **使用数据库**
->   - ***use 数据库名;***
->   - **tips:**
->     - `sys` 是系统数据库。
+### 使用数据库
+
+> - ***use 数据库名;***
+> - **tips:**
+>   - `sys` 是系统数据库。
 
 ---
 
-> - **查询当前数据库所有表**
->   - ***show tables;***
+### 查询当前数据库所有表
+
+> - ***show tables;***
 
 ---
 
-> - **查询表结构**
->   - ***desc 表名;***
+### 查询表结构
+
+> - ***desc 表名;***
 
 ---
 
-> - **查询指定表的建表语句**
->   - ***show create table 表名;***
+### 查询指定表的建表语句
+
+> - ***show create table 表名;***
 
 ---
 
-> - **创建表**
->   - ***create table 表名(字段1 字段1类型 [comment 字段1注释], 字段2 字段2类型 [comment 字段2注释], ..., 字段n 字段n类型 [comment 字段n注释]) [comment 表注释];***
+### 创建表
+
+> - ***create table 表名(字段1 字段1类型 [comment 字段1注释], 字段2 字段2类型 [comment 字段2注释], ..., 字段n 字段n类型 [comment 字段n注释]) [comment 表注释];***
 
 ---
 
-> - **查询指定表的建表语句**
->   - ***show create table 表名;***
+### 添加字段
+
+> - ***alter table 表名 add 字段名 数据类型(长度) [comment 注释] [约束];***
 
 ---
 
-> - **添加字段**
->   - ***alter table 表名 add 字段名 数据类型(长度) [comment 注释] [约束];***
+### 修改字段的数据类型
+
+> - ***alter table 表名 modify 字段名 新数据类型(长度);***
 
 ---
 
-> - **修改字段的数据类型**
->   - ***alter table 表名 modify 字段名 新数据类型(长度);***
+### 修改字段的名字和数据类型
+
+> - ***alter table 表名 change 旧字段名 新字段名 新数据类型(长度) [comment 注释] [约束];***
 
 ---
 
-> - **修改字段的名字和数据类型**
->   - ***alter table 表名 change 旧字段名 新字段名 新数据类型(长度) [comment 注释] [约束];***
+### 删除字段
+
+> - ***alter table 表名 drop 字段名;***
 
 ---
 
-> - **删除字段**
->   - ***alter table 表名 drop 字段名;***
+### 修改表名
+
+> - ***alter table 表名 rename to 新表名;***
 
 ---
 
-> - **修改表名**
->   - ***alter table 表名 rename to 新表名;***
+### 删除表
+
+> - ***drop table [if exists] 表名;***
 
 ---
 
-> - **删除表**
->   - ***drop table [if exists] 表名;***
+### 删除表并重新创建该表
 
----
-
-> - **删除表并重新创建该表**
->   - ***truncate table 表名;***
+> - ***truncate table 表名;***
 
 ---
 
