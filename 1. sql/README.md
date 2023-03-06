@@ -450,3 +450,90 @@
 > - 如果想查询出用外键对应的结果，应该使用如下语句 `select * from 表1, 表2 where 表1.外键对应字段 = 表2.外键连接字段;` 。外键设在表1，表2的外键连接字段通常是表2的主键。
 
 ---
+
+### 内连接
+
+> - 查询多张表交集部分的数据。
+> - 多表查询通常会为表起别名，但为表起了别名后就不能再使用表名来指定对应的字段了，此时只能够使用别名来指定字段。
+
+#### 隐式内连接
+
+> - ***select 表名.字段名, ... from 表1 [as 别名], 表2 [as 别名] where 条件 ...;***
+
+#### 显式内连接
+
+> - ***select 表名.字段名, ... from 表1 [as 别名] [inner] join 表2 [as 别名] on 连接条件;***
+> - ***examples:***
+>   - 查询每一个员工的姓名和关联的部门名称。员工表和部门表为 `emp` 和 `dept` ，名称字段均为 `name` ， `emp` 中的外键字段 `dept_id` 连接 `dept` 表主键 `id` 。
+>   - 隐式内连接实现 `select e.name, d.name from emp e, dept d where e.dept_id = d.id` 。
+>   - 显式内连接实现 `select e.name, d.name from emp e inner join dept d on e.dept_id = d.id` 。
+
+---
+
+### 外连接
+
+#### 左外连接
+
+> - ***select 字段列表 from 表1 left [outer] join 表2 on 条件 ...;***
+> - 左外连接相当于查询表1（左表）的所有数据，也包含表1和表2的交集数据。
+> - ***examples:***
+>   - 查询员工表的所有数据和对应的部门信息。案例表结构和内连接案例一样，但由于要查询员工表所有信息，不能使用内连接，而要使用外连接。左外连接语句为 `select e.*, d.name from emp e left outer join dept d on e.dept_id = d.id` 。
+
+#### 右外连接
+
+> - ***select 字段列表 from 表1 right [outer] join 表2 on 条件 ...;***
+> - 右外连接相当于查询表2（右表）的所有数据，也包含表1和表2的交集数据。
+> - ***tips:***
+>   - 左外连接和右外连接是可以相互替换的，只需要调整在连接查询时SQL中，表结构的先后顺序就可以了。而我们在日常开发使用时，更偏向于左外连接。
+
+---
+
+### 自连接
+
+> - 自连接查询即一张表与自己进行连接查询，可以是内连接也可以是外连接，但注意两张表要起不一样的别名用于写连接条件，要不然我们不清楚所指定的条件、返回的字段，到底是哪一张表的字段。
+> - ***examples:***
+>   - 如果想要查询员工及其所属领导的名字，假设员工表 `emp` 中有一个字段 `managerid` ，其值为该员工的领导对应的在 `emp` 表中的 `id` 。
+>   - 内连接查询不会显示大boss，因为它没有领导。语句为 `select a.name, b.name from emp a, emp b where a.managerid = b.id;` 。
+>   - 如果想要查询所有员工及其所属领导的名字怎么办，要求员工没有领导也要显示出来。
+>   - 我们使用外连接，语句为  `select a.name, b.name from emp a left join emp b on a.managerid = b.id;` 。
+
+---
+
+### 联合查询
+
+> - ***select 字段列表 from 表1 ... union [all] select 字段列表 from 表2 ...;***
+> - 联合查询就是把多次查询的结果合并起来，形成一个新的查询结果集。
+> - 对于联合查询的多张表，每次查询的列数必须保持一致，字段类型也需要保持一致，可以理解为联合查询是把两张字段数量和类型的结果表上下叠加。
+> - `union all` 会将全部的数据直接合并在一起， `union` 会对合并之后的数据去重。
+> - ***examples:***
+>   - 例如查询薪资低于5000的员工和年龄大于50的员工全部查询出来，语句为 `select * from emp where salary < 5000 union select * from emp where age > 50;` 。注意用 `or` 也可以，但不利于使用索引提高查询效率。
+
+---
+
+### 子查询
+
+> - SQL语句中嵌套 `select` 语句，称为嵌套查询，又称子查询。
+> - 子查询外部的语句可以是`insert` / `update` / `delete` / `select` 的任何一个。
+> - 根据子查询结果不同，分为：
+>   - 标量子查询，子查询结果为单个值如数字、字符串、日期等，常用操作符为等于和不等于相关的。
+>   - 列子查询，子查询结果为一列，常用操作符包括：
+>     - `in` ：在指定的集合范围内多选一。
+>     - `not in` ：不在指定的集合范围之内。
+>     - `any` ：子查询返回的列表中，有任意一个满足即可。
+>     - `some` ：和 `any` 相同。
+>     - `all` ：子查询返回列表的所有值都必须满足。
+>   - 行子查询，子查询结果为一行。
+>   - 表子查询，子查询结果为多行多列，常用的操作符为 `in` 。
+> - 根据子查询位置，分为：
+>   - `where` 之后。
+>   - `from` 之后。
+>   - `select` 之后。
+> - ***examples:***
+>   - 查询部门为销售部的所有员工信息。首先查询部门表中销售部的部门 `id` ，再查询员工表中部门 `id` 等于上述结果的员工。标量子查询语句为 `select * from emp where dept_id = (select id from dept where name = '销售部');` 。
+>   - 查询比财务部所有人工资都高的员工信息。首先要查出财务部的部门编号，再查出财务部的员工的薪水信息，最后查出所有部门中比财务部员工工资都高的信息。列子查询语句为 `select * from emp where salary > all(select salary from emp where dept_id = (select id from dept where name = '财务部'));` 。如果只要求大于销售部任意一人的薪水，那么把 `all` 换成 `any` 或者 `some` 即可。
+>   - 查询与小明的薪资和直属领导相同的员工信息。首先查出小明的薪资和领导信息，在同一行。再查其他薪资与领导和小明相同的员工信息。行子查询语句为 `select * from emp where (salary, managerid) = (select salary, managerid from emp where name = '小明');` 。
+>   - 查询与小明或小红的薪资和直属领导相同的员工信息。首先查出小明与小红的薪资和直属领导的信息，再将其作为子表进行表子查询。表子查询语句为 `select * from emp where (salary, managerid) in (select salary, managerid from emp where name = '小明' or name = '小红');` 。注意表子查询使用的是 `in` 操作符而不是等于号。
+>   - 查询入职日期在 `2006-01-01` 后的员工信息及其部门信息。先查出入职日期在 `2006-01-01` 后的员工信息，然后将结果作为一张表与部门信息表进行左外连接（没有部门也查）进行查询。语句为 `select e.*, d.* from (select * from emp where entrydate > '2006-01-01') e left join dept d on e.dept_id = d.id;` 。注意在 `from` 后面使用子查询查出来的表要起一个别名用于后续的语句。
+
+---
+---
